@@ -34,7 +34,7 @@ Student performance summary:
 - Weak subjects: ${weakSubjects || "none identified yet"}
 - Recent quiz scores: ${recentScores}
 
-Respond ONLY with a valid JSON object (no markdown, no backticks, no preamble). Use this exact structure:
+Respond ONLY with a valid JSON object. Use this exact structure:
 {
   "strengths": ["strength 1", "strength 2", "strength 3"],
   "weaknesses": ["weakness 1", "weakness 2", "weakness 3"],
@@ -48,14 +48,18 @@ Respond ONLY with a valid JSON object (no markdown, no backticks, no preamble). 
 
 async function fetchGeminiReport(apiKey, prompt) {
   const res = await fetch(
-    // UPDATED: Changed gemini-1.5-flash to gemini-2.5-flash
     `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.7, maxOutputTokens: 1200 },
+        generationConfig: { 
+          temperature: 0.7, 
+          maxOutputTokens: 1200,
+          // FIX: This forces Gemini backend to format everything into clean JSON instantly
+          responseMimeType: "application/json" 
+        },
       }),
     }
   );
@@ -67,7 +71,9 @@ async function fetchGeminiReport(apiKey, prompt) {
 
   const data = await res.json();
   const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
-  return JSON.parse(raw.replace(/```json|```/g, "").trim());
+  
+  // Clean parse without needing messy regex expressions
+  return JSON.parse(raw.trim());
 }
 
 const SKILL_COLORS = { 
@@ -199,7 +205,7 @@ export default function AIReportPage({ results }) {
       <div className="ai-page-header">
         <div>
           <h1 className="ai-heading">AI performance report</h1>
-          <p className="ai-subheading">Powered by Gemini 1.5 Flash</p>
+          <p className="ai-subheading">Powered by Gemini 2.5 Flash</p>
         </div>
         <span className="ai-model-badge">Gemini Flash</span>
       </div>
@@ -248,6 +254,3 @@ export default function AIReportPage({ results }) {
     </div>
   );
 }
-
-
-
