@@ -47,9 +47,9 @@ Respond ONLY with a valid JSON object (no markdown, no backticks, no preamble). 
 }
 
 async function fetchGeminiReport(apiKey, prompt) {
-  // FIXED: Replaced key=... with key=${apiKey} to properly use the variable
   const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+    // UPDATED: Changed gemini-1.5-flash to gemini-2.5-flash
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -67,8 +67,6 @@ async function fetchGeminiReport(apiKey, prompt) {
 
   const data = await res.json();
   const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
-  
-  // Clean up any potential markdown wrap the AI might accidentally provide
   return JSON.parse(raw.replace(/```json|```/g, "").trim());
 }
 
