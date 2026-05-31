@@ -5,33 +5,20 @@ function Login() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  async function handleLogin() {
+  function handleLogin() {
     if (!form.email || !form.password) {
       setError("Please fill in all fields."); return;
     }
-
-    setLoading(true);
-    try {
-      const res = await fetch(`http://localhost:3000/users?email=${form.email}&password=${form.password}`);
-      const users = await res.json();
-
-      if (users.length === 0) {
-        setError("Invalid email or password."); setLoading(false); return;
-      }
-
-      localStorage.setItem("quizUser", JSON.stringify(users[0]));
-      navigate("/dashboard");
-    } catch {
-      setError("Could not connect to server. Is JSON Server running?");
-    } finally {
-      setLoading(false);
-    }
+    const users = JSON.parse(localStorage.getItem("quizUsers") || "[]");
+    const user = users.find(u => u.email === form.email && u.password === form.password);
+    if (!user) { setError("Invalid email or password."); return; }
+    localStorage.setItem("quizUser", JSON.stringify(user));
+    navigate("/dashboard");
   }
 
   return (
@@ -42,9 +29,7 @@ function Login() {
         {error && <div style={styles.error}>{error}</div>}
         <input style={styles.input} type="email" name="email" placeholder="Email address" value={form.email} onChange={handleChange} />
         <input style={styles.input} type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} />
-        <button style={styles.btn} onClick={handleLogin} disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </button>
+        <button style={styles.btn} onClick={handleLogin}>Login</button>
         <p style={styles.switchText}>
           Don't have an account?{" "}
           <span style={styles.link} onClick={() => navigate("/register")}>Register</span>
