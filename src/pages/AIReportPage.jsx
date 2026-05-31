@@ -156,7 +156,7 @@ export default function AIReportPage({ results }) {
           </button>
         </div>
         <div className="ai-key-hint">Free key at <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer">aistudio.google.com</a> · key is never stored</div>
-        <div className="ai-key-hint" style={{ marginTop: 4 }}>Tip: set <code>VITE_GEMINI_KEY=AIza…</code> in your <code>.env</code> to pre-fill</div>
+        <div className="ai-key-hint" style={{ marginTop: 4 }}>Tip: set <code>VITE_GEMINI_KEY=your_key_here</code> in your <code>.env</code> to pre-fill</div>
       </div>
       {error && <div className="ai-error">{error}</div>}
       {loading && <div className="ai-loading"><div className="ai-spinner" /><p>Analysing your performance with Gemini AI…</p></div>}
