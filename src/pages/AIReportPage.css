@@ -1,0 +1,52 @@
+.ai-page { padding: 1.5rem; max-width: 900px; margin: 0 auto; }
+.ai-page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem; gap: 12px; }
+.ai-heading { font-size: 1.25rem; font-weight: 600; color: #1a1a1a; }
+.ai-subheading { font-size: 13px; color: #888; margin-top: 4px; }
+.ai-model-badge { background: #e6f1fb; color: #185fa5; font-size: 12px; padding: 4px 12px; border-radius: 6px; font-weight: 500; white-space: nowrap; }
+.ai-key-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem; }
+.ai-key-label { font-size: 13px; font-weight: 500; color: #555; margin-bottom: 10px; }
+.ai-key-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.ai-key-input { flex: 1; min-width: 200px; padding: 8px 12px; font-size: 13px; border: 1px solid #ddd; border-radius: 8px; background: #fafafa; color: #1a1a1a; outline: none; }
+.ai-key-input:focus { border-color: #378add; box-shadow: 0 0 0 3px rgba(55,138,221,0.15); background: #fff; }
+.ai-gen-btn { padding: 8px 20px; font-size: 13px; font-weight: 500; border: none; border-radius: 8px; background: #185fa5; color: #fff; cursor: pointer; white-space: nowrap; }
+.ai-gen-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.ai-gen-btn:not(:disabled):hover { opacity: 0.85; }
+.ai-key-hint { font-size: 12px; color: #999; margin-top: 8px; }
+.ai-key-hint a { color: #185fa5; text-decoration: none; }
+.ai-key-hint code { font-family: monospace; font-size: 11px; background: #f0f0f0; padding: 1px 5px; border-radius: 4px; color: #555; }
+.ai-error { background: #fcebeb; border: 1px solid #f09595; border-radius: 8px; padding: 0.875rem 1.125rem; font-size: 13px; color: #a32d2d; margin-bottom: 1rem; }
+.ai-loading { text-align: center; padding: 3rem 1rem; color: #888; font-size: 14px; }
+.ai-spinner { display: inline-block; width: 30px; height: 30px; border: 3px solid #e8e8e8; border-top-color: #378add; border-radius: 50%; animation: ai-spin 0.7s linear infinite; margin-bottom: 12px; }
+@keyframes ai-spin { to { transform: rotate(360deg); } }
+.ai-empty { text-align: center; padding: 2.5rem 1rem; color: #aaa; font-size: 14px; }
+.ai-empty-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.5; }
+.ai-summary-banner { background: #e6f1fb; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+.ai-summary-label { font-size: 12px; font-weight: 500; color: #185fa5; margin-bottom: 6px; }
+.ai-summary-text { font-size: 14px; color: #1a1a1a; line-height: 1.65; }
+.ai-skill-level-row { margin-top: 10px; }
+.ai-skill-level-label { font-size: 12px; color: #555; }
+.ai-skill-level-value { font-size: 12px; font-weight: 600; color: #185fa5; margin-left: 4px; }
+.ai-report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 640px) { .ai-report-grid { grid-template-columns: 1fr; } }
+.ai-report-section { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 1.25rem; }
+.ai-report-section.full { grid-column: 1 / -1; }
+.ai-section-header { display: flex; align-items: center; gap: 8px; margin-bottom: 0.875rem; }
+.ai-section-icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.ai-section-icon.green { background: #eaf3de; }
+.ai-section-icon.red { background: #fcebeb; }
+.ai-section-icon.blue { background: #e6f1fb; }
+.ai-section-icon.amber { background: #faeeda; }
+.ai-section-title { font-size: 13px; font-weight: 500; color: #555; }
+.ai-chip { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; margin: 3px 4px 3px 0; }
+.ai-chip.strength { background: #eaf3de; color: #3b6d11; }
+.ai-chip.weakness { background: #fcebeb; color: #a32d2d; }
+.ai-body-text { font-size: 13px; color: #444; line-height: 1.7; margin: 0; }
+.ai-skill-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.ai-skill-name { font-size: 12px; color: #666; width: 100px; flex-shrink: 0; }
+.ai-skill-track { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
+.ai-skill-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+.ai-skill-pct { font-size: 12px; color: #888; width: 32px; text-align: right; }
+.ai-roadmap-step { display: flex; gap: 12px; margin-bottom: 14px; }
+.ai-roadmap-step:last-child { margin-bottom: 0; }
+.ai-step-num { width: 22px; height: 22px; border-radius: 50%; background: #e6f1fb; color: #185fa5; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.ai-step-text { font-size: 13px; color: #444; line-height: 1.55; }

@@ -1,0 +1,33 @@
+.pf-page { padding: 1.5rem; max-width: 900px; margin: 0 auto; }
+.pf-heading { font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; color: #1a1a1a; }
+.pf-metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.25rem; }
+@media (max-width: 600px) { .pf-metrics-grid { grid-template-columns: repeat(2, 1fr); } }
+.pf-metric-card { background: #f5f5f5; border-radius: 8px; padding: 1rem; }
+.pf-metric-label { font-size: 12px; color: #666; margin-bottom: 6px; }
+.pf-metric-value { font-size: 22px; font-weight: 600; color: #1a1a1a; }
+.pf-metric-value.green { color: #3b6d11; }
+.pf-metric-value.amber { color: #ba7517; }
+.pf-metric-value.red { color: #a32d2d; }
+.pf-metric-sub { font-size: 12px; color: #999; margin-top: 4px; }
+.pf-charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+@media (max-width: 640px) { .pf-charts-grid { grid-template-columns: 1fr; } }
+.pf-chart-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 1.25rem; }
+.pf-chart-title { font-size: 13px; font-weight: 500; color: #555; margin-bottom: 0.75rem; }
+.pf-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; font-size: 12px; color: #666; }
+.pf-legend-item { display: flex; align-items: center; gap: 5px; }
+.pf-legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.pf-weak-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.pf-weak-item { padding: 10px 12px; background: #fafafa; border-radius: 8px; }
+.pf-weak-name { font-size: 13px; font-weight: 500; color: #1a1a1a; }
+.pf-weak-score { font-size: 12px; color: #888; margin-top: 2px; }
+.pf-progress-bar { height: 4px; background: #e8e8e8; border-radius: 2px; margin-top: 6px; overflow: hidden; }
+.pf-progress-fill { height: 100%; border-radius: 2px; background: #ba7517; transition: width 0.4s ease; }
+.pf-full-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 1.25rem; overflow-x: auto; margin-bottom: 1rem; }
+.pf-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.pf-table th { text-align: left; padding: 8px 12px; font-size: 12px; font-weight: 500; color: #666; border-bottom: 1px solid #eee; }
+.pf-table td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; color: #1a1a1a; }
+.pf-table tr:last-child td { border-bottom: none; }
+.pf-badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 11px; font-weight: 500; }
+.pf-badge.pass { background: #eaf3de; color: #3b6d11; }
+.pf-badge.fail { background: #fcebeb; color: #a32d2d; }
+.pf-empty { text-align: center; padding: 3rem 1rem; color: #888; font-size: 14px; }

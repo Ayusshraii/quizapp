@@ -1,0 +1,108 @@
+{
+  "users": [
+    {
+      "name": "fdsdf",
+      "email": "dsgg@gmail.com",
+      "password": "gfhdfhjnvn",
+      "id": "BdMX3BNdSs4"
+    },
+    {
+      "name": "ayuh",
+      "email": "ajfof@gmail.com",
+      "password": "dll;f;f",
+      "id": "icQPNrDcE8I"
+    }
+  ],
+  "quizzes": [
+    {
+      "id": "1",
+      "title": "JavaScript Basics",
+      "questions": 10,
+      "time": 10,
+      "color": "#f7971e"
+    },
+    {
+      "id": "2",
+      "title": "React Fundamentals",
+      "questions": 10,
+      "time": 10,
+      "color": "#534AB7"
+    },
+    {
+      "id": "3",
+      "title": "HTML & CSS",
+      "questions": 10,
+      "time": 10,
+      "color": "#11998e"
+    },
+    {
+      "id": "4",
+      "title": "Python Basics",
+      "questions": 10,
+      "time": 10,
+      "color": "#e52d27"
+    },
+    {
+      "id": "5",
+      "title": "General Knowledge",
+      "questions": 10,
+      "time": 10,
+      "color": "#1a1a2e"
+    }
+  ],
+  "results": [
+    {
+      "userId": "BdMX3BNdSs4",
+      "quizId": 4,
+      "quizTitle": "Python Basics",
+      "score": 9,
+      "total": 10,
+      "percentage": 90,
+      "correctAnswers": 9,
+      "wrongAnswers": 1,
+      "passed": true,
+      "timeTaken": 43,
+      "date": "2026-05-30T12:09:13.960Z",
+      "answers": [
+        "print()",
+        "def",
+        ".py",
+        "[]",
+        "**",
+        "Returns length",
+        "<!--",
+        "False",
+        "for",
+        "0 to 4"
+      ],
+      "id": "v55KaOMHe-c"
+    },
+    {
+      "userId": "icQPNrDcE8I",
+      "quizId": 4,
+      "quizTitle": "Python Basics",
+      "score": 10,
+      "total": 10,
+      "percentage": 100,
+      "correctAnswers": 10,
+      "wrongAnswers": 0,
+      "passed": true,
+      "timeTaken": 38,
+      "date": "2026-05-31T03:12:35.435Z",
+      "answers": [
+        "print()",
+        "def",
+        ".py",
+        "[]",
+        "**",
+        "Returns length",
+        "#",
+        "False",
+        "for",
+        "0 to 4"
+      ],
+      "id": "kAC8_1cokxo"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
