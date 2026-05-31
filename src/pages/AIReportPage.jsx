@@ -9,18 +9,22 @@ function buildPrompt(results) {
   const passed = results.filter((r) => r.passed).length;
   const failed = results.length - passed;
   const subjectMap = {};
+  
   results.forEach((r) => {
     const subj = r.quizTitle || r.subject || "Unknown";
     if (!subjectMap[subj]) subjectMap[subj] = { correct: 0, wrong: 0 };
     subjectMap[subj].correct += r.correctAnswers ?? 0;
     subjectMap[subj].wrong += r.wrongAnswers ?? 0;
   });
+
   const weakSubjects = Object.entries(subjectMap).map(([name, d]) => {
     const total = d.correct + d.wrong;
     const pct = total > 0 ? Math.round((d.correct / total) * 100) : 0;
     return `${name} (${pct}%)`;
   }).filter((s) => parseInt(s.match(/\d+/)[0]) < 70).join(", ");
+
   const recentScores = results.slice(-5).map((r) => `${r.quizTitle || "Quiz"} (${r.percentage}%)`).join(", ");
+
   return `You are an expert educational analyst. Based on this student's quiz performance data, generate a detailed AI performance report.
 
 Student performance summary:
@@ -43,8 +47,9 @@ Respond ONLY with a valid JSON object (no markdown, no backticks, no preamble). 
 }
 
 async function fetchGeminiReport(apiKey, prompt) {
+  // FIXED: Replaced key=... with key=${apiKey} to properly use the variable
   const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=...`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -54,22 +59,39 @@ async function fetchGeminiReport(apiKey, prompt) {
       }),
     }
   );
+
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err?.error?.message || `API error ${res.status}`);
   }
+
   const data = await res.json();
   const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+  
+  // Clean up any potential markdown wrap the AI might accidentally provide
   return JSON.parse(raw.replace(/```json|```/g, "").trim());
 }
 
-const SKILL_COLORS = { default: "#378ADD", JavaScript: "#378ADD", CSS: "#639922", React: "#BA7517", DSA: "#E24B4A", SQL: "#534AB7", HTML: "#D85A30" };
+const SKILL_COLORS = { 
+  default: "#378ADD", 
+  JavaScript: "#378ADD", 
+  CSS: "#639922", 
+  React: "#BA7517", 
+  DSA: "#E24B4A", 
+  SQL: "#534AB7", 
+  HTML: "#D85A30" 
+};
 
 function SkillBar({ name, pct }) {
   return (
     <div className="ai-skill-row">
       <span className="ai-skill-name">{name}</span>
-      <div className="ai-skill-track"><div className="ai-skill-fill" style={{ width: `${Math.round(pct)}%`, background: SKILL_COLORS[name] || SKILL_COLORS.default }} /></div>
+      <div className="ai-skill-track">
+        <div 
+          className="ai-skill-fill" 
+          style={{ width: `${Math.round(pct)}%`, background: SKILL_COLORS[name] || SKILL_COLORS.default }} 
+        />
+      </div>
       <span className="ai-skill-pct">{Math.round(pct)}%</span>
     </div>
   );
@@ -88,23 +110,48 @@ function ReportView({ report }) {
       </div>
       <div className="ai-report-grid">
         <div className="ai-report-section">
-          <div className="ai-section-header"><div className="ai-section-icon green">👍</div><div className="ai-section-title">Strengths</div></div>
-          <div className="ai-section-body">{report.strengths?.map((s, i) => <span key={i} className="ai-chip strength">{s}</span>)}</div>
+          <div className="ai-section-header">
+            <div className="ai-section-icon green">👍</div>
+            <div className="ai-section-title">Strengths</div>
+          </div>
+          <div className="ai-section-body">
+            {report.strengths?.map((s, i) => <span key={i} className="ai-chip strength">{s}</span>)}
+          </div>
         </div>
         <div className="ai-report-section">
-          <div className="ai-section-header"><div className="ai-section-icon red">⚠️</div><div className="ai-section-title">Areas to improve</div></div>
-          <div className="ai-section-body">{report.weaknesses?.map((w, i) => <span key={i} className="ai-chip weakness">{w}</span>)}</div>
+          <div className="ai-section-header">
+            <div className="ai-section-icon red">⚠️</div>
+            <div className="ai-section-title">Areas to improve</div>
+          </div>
+          <div className="ai-section-body">
+            {report.weaknesses?.map((w, i) => <span key={i} className="ai-chip weakness">{w}</span>)}
+          </div>
         </div>
         <div className="ai-report-section">
-          <div className="ai-section-header"><div className="ai-section-icon amber">💡</div><div className="ai-section-title">Improvement suggestions</div></div>
-          <div className="ai-section-body"><p className="ai-body-text">{report.suggestions}</p></div>
+          <div className="ai-section-header">
+            <div className="ai-section-icon amber">💡</div>
+            <div className="ai-section-title">Improvement suggestions</div>
+          </div>
+          <div className="ai-section-body">
+            <p className="ai-body-text">{report.suggestions}</p>
+          </div>
         </div>
         <div className="ai-report-section">
-          <div className="ai-section-header"><div className="ai-section-icon blue">📊</div><div className="ai-section-title">Skill level estimate</div></div>
-          <div className="ai-section-body">{Object.entries(report.skillBreakdown || {}).map(([name, pct]) => <SkillBar key={name} name={name} pct={pct} />)}</div>
+          <div className="ai-section-header">
+            <div className="ai-section-icon blue">📊</div>
+            <div className="ai-section-title">Skill level estimate</div>
+          </div>
+          <div className="ai-section-body">
+            {Object.entries(report.skillBreakdown || {}).map(([name, pct]) => (
+              <SkillBar key={name} name={name} pct={pct} />
+            ))}
+          </div>
         </div>
         <div className="ai-report-section full">
-          <div className="ai-section-header"><div className="ai-section-icon blue">🗺️</div><div className="ai-section-title">Learning roadmap</div></div>
+          <div className="ai-section-header">
+            <div className="ai-section-icon blue">🗺️</div>
+            <div className="ai-section-title">Learning roadmap</div>
+          </div>
           <div className="ai-section-body">
             {report.roadmap?.map((step, i) => (
               <div key={i} className="ai-roadmap-step">
@@ -126,11 +173,22 @@ export default function AIReportPage({ results }) {
   const [error, setError] = useState("");
 
   async function handleGenerate() {
-    if (!apiKey.trim()) { setError("Please enter your Gemini API key."); return; }
-    if (!results || results.length === 0) { setError("No quiz results found. Complete at least one quiz first."); return; }
-    setLoading(true); setError(""); setReport(null);
+    if (!apiKey.trim()) { 
+      setError("Please enter your Gemini API key."); 
+      return; 
+    }
+    if (!results || results.length === 0) { 
+      setError("No quiz results found. Complete at least one quiz first."); 
+      return; 
+    }
+    
+    setLoading(true); 
+    setError(""); 
+    setReport(null);
+    
     try {
-      setReport(await fetchGeminiReport(apiKey.trim(), buildPrompt(results)));
+      const generatedReport = await fetchGeminiReport(apiKey.trim(), buildPrompt(results));
+      setReport(generatedReport);
     } catch (e) {
       setError(e.message || "Something went wrong. Check your API key and try again.");
     } finally {
@@ -143,24 +201,46 @@ export default function AIReportPage({ results }) {
       <div className="ai-page-header">
         <div>
           <h1 className="ai-heading">AI performance report</h1>
-          <p className="ai-subheading">Powered by Gemini 2.0 Flash</p>
+          <p className="ai-subheading">Powered by Gemini 1.5 Flash</p>
         </div>
         <span className="ai-model-badge">Gemini Flash</span>
       </div>
+      
       <div className="ai-key-card">
         <div className="ai-key-label">Enter your Gemini API key to generate a personalised report</div>
         <div className="ai-key-row">
-          <input type="password" className="ai-key-input" placeholder="AIza..." value={apiKey} onChange={(e) => setApiKey(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleGenerate()} autoComplete="off" />
+          <input 
+            type="password" 
+            className="ai-key-input" 
+            placeholder="AIza..." 
+            value={apiKey} 
+            onChange={(e) => setApiKey(e.target.value)} 
+            onKeyDown={(e) => e.key === "Enter" && handleGenerate()} 
+            autoComplete="off" 
+          />
           <button className="ai-gen-btn" onClick={handleGenerate} disabled={loading}>
             {loading ? "Generating…" : report ? "Regenerate ↗" : "Generate report ↗"}
           </button>
         </div>
-        <div className="ai-key-hint">Free key at <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer">aistudio.google.com</a> · key is never stored</div>
-        <div className="ai-key-hint" style={{ marginTop: 4 }}>Tip: set <code>VITE_GEMINI_KEY=your_key_here</code> in your <code>.env</code> to pre-fill</div>
+        <div className="ai-key-hint">
+          Free key at <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer">aistudio.google.com</a> · key is never stored permanently
+        </div>
+        <div className="ai-key-hint" style={{ marginTop: 4 }}>
+          Tip: set <code>VITE_GEMINI_KEY=your_key_here</code> in your <code>.env</code> file or hosting dashboard to pre-fill.
+        </div>
       </div>
+      
       {error && <div className="ai-error">{error}</div>}
-      {loading && <div className="ai-loading"><div className="ai-spinner" /><p>Analysing your performance with Gemini AI…</p></div>}
+      
+      {loading && (
+        <div className="ai-loading">
+          <div className="ai-spinner" />
+          <p>Analysing your performance with Gemini AI…</p>
+        </div>
+      )}
+      
       {report && !loading && <ReportView report={report} />}
+      
       {!report && !loading && !error && (
         <div className="ai-empty">
           <div className="ai-empty-icon">🤖</div>
@@ -170,3 +250,6 @@ export default function AIReportPage({ results }) {
     </div>
   );
 }
+
+
+
